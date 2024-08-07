@@ -152,7 +152,7 @@ forever(() => {
         freeze()
       }
     }
-    if (laser.y === maxY) {
+    if (laser.y > maxY) {
       laser.delete()
       lasers.remove(laser)
     }
@@ -207,7 +207,7 @@ forever(() => {
         freeze()
       }
     }
-    if(bomb.y === minY) {
+    if(bomb.y < minY) {
       bombs.remove(bomb)
       bomb.delete()
     }
