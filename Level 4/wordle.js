@@ -26,7 +26,6 @@ var textBoxArray = [];
 var curPos = -1
 
 
-
 range(0, 6).forEach(counter => {
 
   range(0, 5).forEach(counter => {
@@ -36,36 +35,42 @@ range(0, 6).forEach(counter => {
     outerBox.x = boxOGx
     outerBox.y = boxOGy
     outerBox.color = "grey"
-
+    makeBox("")
     boxOGx += 60
     boxOGy += 0
+    outerBox.sendToBack()
+    
   })
   boxOGx = -130
   boxOGy += -70
+
 })
 
 
 
 function createNextBox(text) {
-  if (textBoxArray.length > 1) {
-    console.log(textBoxArray[curPos].text(), curPos)
-    if (textBoxArray[curPos].text() === "") {
+  
+  textBoxArray[curPos].text = () => text;
+  console.log(curPos, textBoxArray[curPos].text())
+//   if (textBoxArray.length > 1) {
+//     console.log(curPos, guess)
+//     if (textBoxArray[curPos].text() === "") {
       
-      textBoxArray[curPos].text = () => text;
-    } else {
-      curPos += 1
-      makeBox(text)
-    }
-  } else {
-    curPos += 1
-    makeBox(text)
-  }
+//       textBoxArray[curPos].text = () => text;
+//     } else {
+//      // curPos += 1
+//  //     makeBox(text)
+//     }
+//   } else {
+//   //  curPos += 1
+//   //  makeBox(text)
+//   }
 
-  if (curPos === 5) {
-    // console.log("textBoxArray", textBoxArray)
-    // console.log("I am about to check")
-    checkGuess(guess);
-  }
+//   if (curPos === 5) {
+//     // console.log("textBoxArray", textBoxArray)
+//     // console.log("I am about to check")
+// //    checkGuess(guess);
+//   }
 }
 
 function checkGuess(guess) {
@@ -89,27 +94,28 @@ function checkGuess(guess) {
 onKeyDown(() => {
   letters.forEach((letter) => {
     if (keysDown.includes(letter) && textOGx < 170) {
+     curPos++;
       createNextBox(letter)
-     // curPos++;
+     
     //  console.log(curPos, letter)
     }
   })
-  if (keysDown.includes('DELETE')) {
+  if (keysDown.includes('DELETE') && curPos > -1) {
     textBoxArray[curPos].text = () => ""
     curPos--;
-    //console.log(curPos, letter)
+   // console.log(curPos)
   }
 })
 
 function makeBox(text) {
   var textInside = new Text()
-  textInside.x = textOGx
-  textInside.y = textOGy
+  textInside.x = boxOGx
+  textInside.y = boxOGy
   textInside.color = "white"
   textInside.text = () => text
   textInside.size = 25
   textBoxArray.push(textInside);
-  textOGx += 60
-  textOGy += 0
-  guess += text
+//  textOGx += 60
+//  textOGy += 0
+//  guess += text
 }
