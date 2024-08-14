@@ -5,7 +5,8 @@ var words = ["which", "there", "their", "about", "would", "these", "other", "wor
   // source: https://github.com/charlesreid1/five-letter-words/blob/master/sgb-words.txt
   // filtering words down to possibleAnswers was done by hallpell
 const winningWord = words[Math.floor(Math.random() * words.length)];
-console.log(winningWord)
+// console.log(winningWord)
+// console.log('keysdown', keysDown);
 
 var youWin = new Image()
 youWin.url = "./docs/images/platformer-you-win.png"
@@ -20,6 +21,9 @@ var boxOGy = 160
 var textOGx = -130
 var textOGy = 160
 var guess = ''
+var textBoxArray = [];
+
+var curPos = -1
 
 range(0, 6).forEach(counter => {
 
@@ -39,17 +43,21 @@ range(0, 6).forEach(counter => {
 })
 
 function createNextBox(text) {
-  var textInside = new Text()
-  textInside.x = textOGx
-  textInside.y = textOGy
-  textInside.color = "white"
-  textInside.text = () => text
-  textInside.size = 25
-  textOGx += 60
-  textOGy += 0
-  guess += text
+  if (textBoxArray.length > 0) {
+    if (textBoxArray[curPos].text === "") {
+      textBoxArray[curPos].text = text;
+    } else {
+      //curPos += 1
+      makeBox(text)
+    }
+  } else {
+    //curPos += 1
+    makeBox(text)
+  }
+
   if (guess.length === 5) {
-    console.log("I am about to check")
+    // console.log("textBoxArray", textBoxArray)
+    // console.log("I am about to check")
     checkGuess(guess);
   }
 }
@@ -60,13 +68,40 @@ function checkGuess(guess) {
   }
 }
 
-//if keypress includes letters, then createNexBox, and
-letters.forEach((letter) => {
-  onKeyDown(() => {
-    if (keysDown.includes(letter) && textOGx < 170)
+// letters.forEach((letter) => {
+//   onKeyDown(() => {
+//     if (keysDown.includes(letter) && textOGx < 170) {
+//     //  curPos += 1
+//       createNextBox(letter)
+//     }
+//     if (keysDown.includes('DELETE')) {
+//       textBoxArray[curPos].text = ''
+//     }
+//   })
+// })
+
+onKeyDown(() => {
+  letters.forEach((letter) => {
+    if (keysDown.includes(letter) && textOGx < 170) {
       createNextBox(letter)
+      curPos++;
+    }
   })
-  if(keysDown.includes('BACKSPACE')) {
-    
+  if (keysDown.includes('DELETE')) {
+    textBoxArray[curPos].text = ''
+    curPos--;
   }
 })
+
+function makeBox(text) {
+  var textInside = new Text()
+  textInside.x = textOGx
+  textInside.y = textOGy
+  textInside.color = "white"
+  textInside.text = () => text
+  textInside.size = 25
+  textBoxArray.push(textInside);
+  textOGx += 60
+  textOGy += 0
+  guess += text
+}
