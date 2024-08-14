@@ -25,6 +25,8 @@ var textBoxArray = [];
 
 var curPos = -1
 
+
+
 range(0, 6).forEach(counter => {
 
   range(0, 5).forEach(counter => {
@@ -42,20 +44,24 @@ range(0, 6).forEach(counter => {
   boxOGy += -70
 })
 
+
+
 function createNextBox(text) {
-  if (textBoxArray.length > 0) {
-    if (textBoxArray[curPos].text === "") {
-      textBoxArray[curPos].text = text;
+  if (textBoxArray.length > 1) {
+    console.log(textBoxArray[curPos].text(), curPos)
+    if (textBoxArray[curPos].text() === "") {
+      
+      textBoxArray[curPos].text = () => text;
     } else {
-      //curPos += 1
+      curPos += 1
       makeBox(text)
     }
   } else {
-    //curPos += 1
+    curPos += 1
     makeBox(text)
   }
 
-  if (guess.length === 5) {
+  if (curPos === 5) {
     // console.log("textBoxArray", textBoxArray)
     // console.log("I am about to check")
     checkGuess(guess);
@@ -74,7 +80,7 @@ function checkGuess(guess) {
 //     //  curPos += 1
 //       createNextBox(letter)
 //     }
-//     if (keysDown.includes('DELETE')) {
+//     if (keysDown.inclfudes('DELETE')) {
 //       textBoxArray[curPos].text = ''
 //     }
 //   })
@@ -84,12 +90,14 @@ onKeyDown(() => {
   letters.forEach((letter) => {
     if (keysDown.includes(letter) && textOGx < 170) {
       createNextBox(letter)
-      curPos++;
+     // curPos++;
+    //  console.log(curPos, letter)
     }
   })
   if (keysDown.includes('DELETE')) {
-    textBoxArray[curPos].text = ''
+    textBoxArray[curPos].text = () => ""
     curPos--;
+    //console.log(curPos, letter)
   }
 })
 
